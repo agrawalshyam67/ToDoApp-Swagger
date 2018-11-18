@@ -1,0 +1,184 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: ToDoApp
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /task:
+    # our controller name
+    x-swagger-router-controller: task
+    get:
+      operationId: getAll
+      description: get the task list
+      # define the type of response for Success "200" and Error
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetTaskListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      operationId: save
+      description: add a new task to the list
+      # task info to be stored
+      parameters:
+        - name: title
+          description: Task Name
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Task"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /task/{id}:
+    # our controller name
+    x-swagger-router-controller: task
+    get:
+      operationId: getOne
+      description: get a task
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetTaskResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      operationId: update
+      description: update a task
+      # define the parameters
+      parameters:
+        - name: id
+          description: Task id
+          type: string
+          in: path
+          required: true
+        - name: title
+          description: Task properties
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Task"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      operationId: delTask
+      description: delete a task
+      # define the parameters
+      parameters:
+        - name: id
+          description: Task id
+          type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  # GET /task successful response
+  GetTaskListResponse:
+    required:
+      - tasks
+    properties:
+      # The array of tasks
+      tasks:
+        type: array
+        items: 
+          type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+            # year:
+            #   type: number
+  GetTaskResponse:
+    required:
+      - id
+      - title
+      # - year
+    properties:
+      id:
+        type: string
+      title: 
+        type: string
+      # year:
+      #   type: number
+  Task:
+    type: object
+    properties:
+      title:
+        type: string
+        description: task object name
+      # year:
+      #   type: number
+      #   description: task description
+    required:
+      - title
+      # - year
+  GeneralResponse:
+    type: object
+    properties:
+      success:
+        type: number
+        description: returns 1 if successful
+      description:
+        type: string
+        description: a short comment 
+    required:
+      - success
+      - description
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
