@@ -4,15 +4,15 @@
     // Exports all the functions to perform on the db
 	module.exports = {getAllTasks, save, getOneTask, update, delTask};
     
-	//GET /task operationId
+	//GET /tasks operationId
 	function getAllTasks(req, res, next) {
       res.json({ tasks: db.find()});
     }
-	//POST /task operationId
+	//POST /tasks operationId
 	function save(req, res, next) {
 		res.json({success: db.save(req.body), description: "Task added to the list!"});
 	}
-	//GET /task/{id} operationId
+	//GET /tasks/{id} operationId
 	function getOneTask(req, res, next) {
 		var id = req.swagger.params.id.value; //req.swagger contains the path parameters
 		var task = db.find(id);
@@ -22,7 +22,7 @@
 			res.status(204).send();
 		}		
 	}
-	//PUT /task/{id} operationId
+	//PUT /tasks/{id} operationId
 	function update(req, res, next) {
 		var id = req.swagger.params.id.value; //req.swagger contains the path parameters
 		var task = req.body;
@@ -33,7 +33,7 @@
 		}
 		
 	}
-	//DELETE /task/{id} operationId
+	//DELETE /tasks/{id} operationId
 	function delTask(req, res, next) {
 		var id = req.swagger.params.id.value; //req.swagger contains the path parameters
 		if(db.remove(id)){
