@@ -2,10 +2,10 @@
 	// Include our "db"
 	var db = require('../../config/db')();
     // Exports all the functions to perform on the db
-	module.exports = {getAll, save, getOne, update, delTask};
+	module.exports = {getAllTasks, save, getOneTask, update, delTask};
     
 	//GET /task operationId
-	function getAll(req, res, next) {
+	function getAllTasks(req, res, next) {
       res.json({ tasks: db.find()});
     }
 	//POST /task operationId
@@ -13,7 +13,7 @@
 		res.json({success: db.save(req.body), description: "Task added to the list!"});
 	}
 	//GET /task/{id} operationId
-	function getOne(req, res, next) {
+	function getOneTask(req, res, next) {
 		var id = req.swagger.params.id.value; //req.swagger contains the path parameters
 		var task = db.find(id);
 		if(task) {

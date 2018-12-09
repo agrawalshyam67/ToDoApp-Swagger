@@ -47,7 +47,7 @@ module.exports = function() {
 				return element.id === id;
 			});
 			if(taskIndex !== -1) {
-				this.taskList[taskIndex].title = task.title;
+				this.taskList[taskIndex].taskDescription = task.taskDescription;
 				return 1;
 			}else {
 				return 0;
